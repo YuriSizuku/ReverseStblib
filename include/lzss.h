@@ -9,7 +9,7 @@
 		NIFTY-Serve	PAF01022
 		CompuServe	74050,1022
 	supporting for single file and memory decode, encode.
-	modifyed by devseed
+	single file library composed by devseed
 **************************************************************/
 #pragma once
 #ifndef _LZSS_H
