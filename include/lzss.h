@@ -11,7 +11,6 @@
 	supporting for single file and memory decode, encode.
 	single file library composed by devseed
 **************************************************************/
-#pragma once
 #ifndef _LZSS_H
 #define _LZSS_H
 #include <ctype.h>
@@ -32,6 +31,13 @@
 #else
 #define LZSS_EXPORT __attribute__((visibility("default")))
 #endif
+#endif
+
+#ifndef LZSS_ENCINITBYTE
+#define LZSS_ENCINITBYTE 0x00
+#endif
+#ifndef LZSS_DECINITBYTE
+#define LZSS_DECINITBYTE 0x00
 #endif
 
 #ifdef __cplusplus
@@ -154,7 +160,7 @@ LZSSDEF size_t lzss_encode(const char* src, char *dst, size_t src_len) // return
 		(2 bytes).  Thus, eight units require at most 16 bytes of code. */
 	code_buf_ptr = mask = 1;
 	s = 0;  r = N - F;
-	for (i = s; i < r; i++) text_buf[i] = 0;  /* Clear the buffer with
+	for (i = s; i < r; i++) text_buf[i] = LZSS_ENCINITBYTE;  /* Clear the buffer with
 		any character that will appear often. */
 	for (len = 0; len < F && pos_src < src_len; len++)
 	{
@@ -246,7 +252,7 @@ LZSSDEF size_t lzss_decode(const char* src, char *dst, size_t src_len)	/* Just t
 	unsigned int  flags;
 	size_t pos_src = 0, pos_dst = 0;
 	
-	for (i = 0; i < N - F; i++) text_buf[i] = 0;
+	for (i = 0; i < N - F; i++) text_buf[i] = LZSS_DECINITBYTE;
 	r = N - F;  flags = 0;
 	for ( ; ; ) 
 	{
