@@ -1,16 +1,10 @@
-# ReverseThirdparty
-## third party single file libraries
+# Reverse3rdlib
 
-There are some of my composed `single library header ` files for reversing, 
-compatible with `gcc`, `tcc`, `clang`. 
+My `single library header` files for reversing,  compatible with `gcc`, `tcc`, `clang`.  
+The namestyle is mostly like [stb](https://github.com/nothings/stb) style.
 
-https://github.com/kuba--/zip   
-https://github.com/nothings/stb   
-https://github.com/TsudaKageyu/minhook  
+This object refers from these libraries below.  
 
-
-## third party tools 
-
-https://www.7-zip.org/  
-https://upx.github.io/  
-https://github.com/microsoft/Detours   
+[zip](https://github.com/kuba--/zip)  
+[stb](https://github.com/nothings/stb)  
+[minhook](https://github.com/TsudaKageyu/minhook)  

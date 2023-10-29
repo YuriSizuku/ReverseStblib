@@ -13,6 +13,7 @@
 **************************************************************/
 #ifndef _LZSS_H
 #define _LZSS_H
+#define STB_LZSS_VERSION 1000
 #include <ctype.h>
 
 #ifndef LZSSDEF

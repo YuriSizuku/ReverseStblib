@@ -1,5 +1,7 @@
 #ifndef _MINHOOK_H
 #define _MINHOOK_H
+#define STB_MINHOOK_VERSION 1330
+
 /*
  *  MinHook - The Minimalistic API Hooking Library for x64/x86
  *  Copyright (C) 2009-2017 Tsuda Kageyu.
