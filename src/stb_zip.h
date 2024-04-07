@@ -12,7 +12,7 @@
 #pragma once
 #ifndef ZIP_H
 #define ZIP_H
-#define STB_ZIP_VERSION 220
+#define STB_ZIP_VERSION 221
 
 #include <stdint.h>
 #include <string.h>
@@ -478,7 +478,7 @@ ZIPDEF ZIP_EXPORT int zip_extract(const char *zipname, const char *dir,
 #endif
 
 #if 1 // miniz.h
-#define MINIZ_EXPORT
+#define MINIZ_EXPORT static
 /* miniz.c 2.2.0 - public domain deflate/inflate, zlib-subset, ZIP
    reading/writing/appending, PNG writing See "unlicense" statement at the end
    of this file. Rich Geldreich <richgel99@gmail.com>, last updated Oct. 13,
@@ -1142,10 +1142,10 @@ typedef struct mz_dummy_time_t_tag {
 extern "C" {
 #endif
 
-extern MINIZ_EXPORT void *miniz_def_alloc_func(void *opaque, size_t items,
+MINIZ_EXPORT void *miniz_def_alloc_func(void *opaque, size_t items,
                                                size_t size);
-extern MINIZ_EXPORT void miniz_def_free_func(void *opaque, void *address);
-extern MINIZ_EXPORT void *miniz_def_realloc_func(void *opaque, void *address,
+MINIZ_EXPORT void miniz_def_free_func(void *opaque, void *address);
+MINIZ_EXPORT void *miniz_def_realloc_func(void *opaque, void *address,
                                                  size_t items, size_t size);
 
 #define MZ_UINT16_MAX (0xFFFFU)
@@ -11566,7 +11566,7 @@ int zip_entry_open(struct zip_t *zip, const char *entryname) {
       (local_dir_header_ofs >= MZ_UINT32_MAX) ? &local_dir_header_ofs : NULL);
 
   if (!mz_zip_writer_create_local_dir_header(
-          pzip, zip->entry.header, entrylen, (mz_uint16)extra_size, 0, 0, 0,
+          pzip, zip->entry.header, (mz_uint16)entrylen, (mz_uint16)extra_size, 0, 0, 0,
           zip->entry.method,
           MZ_ZIP_GENERAL_PURPOSE_BIT_FLAG_UTF8 |
               MZ_ZIP_LDH_BIT_FLAG_HAS_LOCATOR,

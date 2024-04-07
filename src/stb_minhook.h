@@ -1,6 +1,6 @@
 #ifndef _MINHOOK_H
 #define _MINHOOK_H
-#define STB_MINHOOK_VERSION 1330
+#define STB_MINHOOK_VERSION 1331
 
 /*
  *  MinHook - The Minimalistic API Hooking Library for x64/x86
@@ -215,11 +215,11 @@ const char* MH_StatusToString(MH_STATUS status);
 #define MEMORY_SLOT_SIZE 32
 #endif
 
-VOID   InitializeBuffer(VOID);
-VOID   UninitializeBuffer(VOID);
-LPVOID AllocateBuffer(LPVOID pOrigin);
-VOID   FreeBuffer(LPVOID pBuffer);
-BOOL   IsExecutableAddress(LPVOID pAddress);
+static VOID   InitializeBuffer(VOID);
+static VOID   UninitializeBuffer(VOID);
+static LPVOID AllocateBuffer(LPVOID pOrigin);
+static VOID   FreeBuffer(LPVOID pBuffer);
+static BOOL   IsExecutableAddress(LPVOID pAddress);
 
 // Size of each memory block. (= page size of VirtualAlloc)
 #define MEMORY_BLOCK_SIZE 0x1000
@@ -254,16 +254,16 @@ typedef struct _MEMORY_BLOCK
 //-------------------------------------------------------------------------
 
 // First element of the memory block list.
-PMEMORY_BLOCK g_pMemoryBlocks;
+static PMEMORY_BLOCK g_pMemoryBlocks;
 
 //-------------------------------------------------------------------------
-VOID InitializeBuffer(VOID)
+static VOID InitializeBuffer(VOID)
 {
     // Nothing to do for now.
 }
 
 //-------------------------------------------------------------------------
-VOID UninitializeBuffer(VOID)
+static VOID UninitializeBuffer(VOID)
 {
     PMEMORY_BLOCK pBlock = g_pMemoryBlocks;
     g_pMemoryBlocks = NULL;
@@ -435,7 +435,7 @@ static PMEMORY_BLOCK GetMemoryBlock(LPVOID pOrigin)
 }
 
 //-------------------------------------------------------------------------
-LPVOID AllocateBuffer(LPVOID pOrigin)
+static LPVOID AllocateBuffer(LPVOID pOrigin)
 {
     PMEMORY_SLOT  pSlot;
     PMEMORY_BLOCK pBlock = GetMemoryBlock(pOrigin);
@@ -454,7 +454,7 @@ LPVOID AllocateBuffer(LPVOID pOrigin)
 }
 
 //-------------------------------------------------------------------------
-VOID FreeBuffer(LPVOID pBuffer)
+static VOID FreeBuffer(LPVOID pBuffer)
 {
     PMEMORY_BLOCK pBlock = g_pMemoryBlocks;
     PMEMORY_BLOCK pPrev = NULL;
@@ -494,7 +494,7 @@ VOID FreeBuffer(LPVOID pBuffer)
 }
 
 //-------------------------------------------------------------------------
-BOOL IsExecutableAddress(LPVOID pAddress)
+static BOOL IsExecutableAddress(LPVOID pAddress)
 {
     MEMORY_BASIC_INFORMATION mi;
     VirtualQuery(pAddress, &mi, sizeof(mi));
@@ -591,7 +591,7 @@ typedef struct {
 } hde64s;
 #pragma pack(pop)
 
-unsigned int hde64_disasm(const void* code, hde64s* hs);
+static unsigned int hde64_disasm(const void* code, hde64s* hs);
 typedef hde64s HDE;
 #define HDE_DISASM(code, hs) hde64_disasm(code, hs)
 
@@ -624,7 +624,7 @@ typedef hde64s HDE;
 #define DELTA_OP_ONLY_MEM  0x1d8
 #define DELTA_OP2_ONLY_MEM 0x1e7
 
-unsigned char hde64_table[] = {
+static unsigned char hde64_table[] = {
   0xa5,0xaa,0xa5,0xb8,0xa5,0xaa,0xa5,0xaa,0xa5,0xb8,0xa5,0xb8,0xa5,0xb8,0xa5,
   0xb8,0xc0,0xc0,0xc0,0xc0,0xc0,0xc0,0xc0,0xc0,0xac,0xc0,0xcc,0xc0,0xa1,0xa1,
   0xa1,0xa1,0xb1,0xa5,0xa5,0xa6,0xc0,0xc0,0xd7,0xda,0xe0,0xc0,0xe4,0xc0,0xea,
@@ -664,7 +664,7 @@ unsigned char hde64_table[] = {
 };
 
 #include <string.h>
-unsigned int hde64_disasm(const void* code, hde64s* hs)
+static unsigned int hde64_disasm(const void* code, hde64s* hs)
 {
     uint8_t x, c, * p = (uint8_t*)code, cflags, opcode, pref = 0;
     uint8_t* ht = hde64_table, m_mod, m_reg, m_rm, disp_size = 0;
@@ -1027,7 +1027,7 @@ disasm_done:
 #define DELTA_OP_ONLY_MEM  0x1cb
 #define DELTA_OP2_ONLY_MEM 0x1da
 
-unsigned char hde32_table[] = {
+static unsigned char hde32_table[] = {
   0xa3,0xa8,0xa3,0xa8,0xa3,0xa8,0xa3,0xa8,0xa3,0xa8,0xa3,0xa8,0xa3,0xa8,0xa3,
   0xa8,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xaa,0xac,0xaa,0xb2,0xaa,0x9f,0x9f,
   0x9f,0x9f,0xb5,0xa3,0xa3,0xa4,0xaa,0xaa,0xba,0xaa,0x96,0xaa,0xa8,0xaa,0xc3,
@@ -1133,12 +1133,12 @@ typedef struct {
 } hde32s;
 #pragma pack(pop)
 
-unsigned int hde32_disasm(const void* code, hde32s* hs);
+static unsigned int hde32_disasm(const void* code, hde32s* hs);
 typedef hde32s HDE;
 #define HDE_DISASM(code, hs) hde32_disasm(code, hs)
 
 #include <string.h>
-unsigned int hde32_disasm(const void* code, hde32s* hs)
+static unsigned int hde32_disasm(const void* code, hde32s* hs)
 {
     uint8_t x, c, * p = (uint8_t*)code, cflags, opcode, pref = 0;
     uint8_t* ht = hde32_table, m_mod, m_reg, m_rm, disp_size = 0;
@@ -1539,7 +1539,7 @@ typedef struct _TRAMPOLINE
     UINT8  newIPs[8];       // [Out] Instruction boundaries of the trampoline function.
 } TRAMPOLINE, * PTRAMPOLINE;
 
-BOOL CreateTrampolineFunction(PTRAMPOLINE ct);
+static BOOL CreateTrampolineFunction(PTRAMPOLINE ct);
 // Maximum size of a trampoline function.
 #if defined(_M_X64) || defined(__x86_64__)
 #define TRAMPOLINE_MAX_SIZE (MEMORY_SLOT_SIZE - sizeof(JMP_ABS))
@@ -1564,7 +1564,7 @@ static BOOL IsCodePadding(LPBYTE pInst, UINT size)
 }
 
 //-------------------------------------------------------------------------
-BOOL CreateTrampolineFunction(PTRAMPOLINE ct)
+static BOOL CreateTrampolineFunction(PTRAMPOLINE ct)
 {
 #if defined(_M_X64) || defined(__x86_64__)
     CALL_ABS call = {
@@ -1862,13 +1862,13 @@ typedef struct _FROZEN_THREADS
 //-------------------------------------------------------------------------
 
 // Spin lock flag for EnterSpinLock()/LeaveSpinLock().
-volatile LONG g_isLocked = FALSE;
+static volatile LONG g_isLocked = FALSE;
 
 // Private heap handle. If not NULL, this library is initialized.
-HANDLE g_hHeap = NULL;
+static HANDLE g_hHeap = NULL;
 
 // Hook entries.
-struct
+static struct
 {
     PHOOK_ENTRY pItems;     // Data heap
     UINT        capacity;   // Size of allocated data heap, items
